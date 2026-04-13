@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://cc052p63gd5i6"]
+
+[ext_resource type="Script" uid="uid://c0nj0pc0q3tfi" path="res://main.gd" id="1_ig7tw"]
+
+[node name="Main" type="Control" unique_id=838311848]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig7tw")
+
+[node name="Brew" type="Button" parent="." unique_id=2075846504]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -101.0
+offset_top = -62.0
+offset_right = 101.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Brew"
+
+[node name="Upgrade" type="Button" parent="." unique_id=2086158884]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -82.0
+offset_bottom = -51.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Upgrade
+"
+
+[node name="AutoBrewUpgrade" type="Button" parent="." unique_id=528973530]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 276.0
+offset_bottom = 307.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Auto-Brewer"
+
+[node name="NewFloor" type="Button" parent="." unique_id=873839409]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -55.5
+offset_top = 48.0
+offset_right = 55.5
+offset_bottom = 115.0
+grow_horizontal = 2
+text = "Install New Floor"
+
+[node name="StrawberryUpgrade" type="Button" parent="." unique_id=1941571586]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Button2" type="Button" parent="." unique_id=643629052]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="UpgradeCost" type="Label" parent="." unique_id=839407247]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -52.5
+offset_top = -122.0
+offset_right = 52.5
+offset_bottom = -87.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Upgrade Cost: "
+
+[node name="CoffeeCounter" type="Label" parent="." unique_id=44092733]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.5
+offset_top = -133.0
+offset_right = 38.5
+offset_bottom = -85.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TotalCoffeeCount" type="Label" parent="." unique_id=1573962714]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 100.0
+offset_bottom = 56.0
+
+[node name="AutoBrewers" type="Label" parent="." unique_id=1386275607]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 518.0
+offset_right = 111.0
+offset_bottom = 557.0
+
+[node name="FloorCost" type="Label" parent="." unique_id=53398053]
+layout_mode = 0
+offset_left = 537.0
+offset_top = 19.0
+offset_right = 577.0
+offset_bottom = 42.0
+
+[node name="AutoBrewTimer" type="Timer" parent="." unique_id=282432889]
+
+[connection signal="pressed" from="Brew" to="." method="_on_brew_pressed"]
+[connection signal="pressed" from="Upgrade" to="." method="_on_upgrade_pressed"]
+[connection signal="pressed" from="AutoBrewUpgrade" to="." method="_on_auto_brew_upgrade_pressed"]
+[connection signal="pressed" from="NewFloor" to="." method="_on_new_floor_pressed"]
+[connection signal="timeout" from="AutoBrewTimer" to="." method="_on_auto_brew_timer_timeout"]
