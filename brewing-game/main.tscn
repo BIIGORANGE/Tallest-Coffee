@@ -1,18 +1,19 @@
 [gd_scene format=3 uid="uid://cc052p63gd5i6"]
 
-[ext_resource type="Script" uid="uid://c0nj0pc0q3tfi" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://c0nj0pc0q3tfi" path="res://ControlMain.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dft8h3ay01bl1" path="res://3d_main.gd" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cdkiobbis424n" path="res://floors.tscn" id="3_1bvp3"]
 
-[node name="Main" type="Control" unique_id=838311848]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1bvp3"]
+radius = 800.0
+height = 1600.0
+
+[node name="ControlMain" type="Node" unique_id=1851741253]
 script = ExtResource("1_ig7tw")
 
 [node name="Brew" type="Button" parent="." unique_id=2075846504]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -27,7 +28,6 @@ grow_vertical = 2
 text = "Brew"
 
 [node name="Upgrade" type="Button" parent="." unique_id=2086158884]
-layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -40,7 +40,6 @@ text = "Upgrade
 "
 
 [node name="AutoBrewUpgrade" type="Button" parent="." unique_id=528973530]
-layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -52,7 +51,6 @@ grow_vertical = 2
 text = "Auto-Brewer"
 
 [node name="NewFloor" type="Button" parent="." unique_id=873839409]
-layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -64,17 +62,14 @@ grow_horizontal = 2
 text = "Install New Floor"
 
 [node name="StrawberryUpgrade" type="Button" parent="." unique_id=1941571586]
-layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 
-[node name="Button2" type="Button" parent="." unique_id=643629052]
-layout_mode = 0
+[node name="BananaUpgrade" type="Button" parent="." unique_id=643629052]
 offset_right = 8.0
 offset_bottom = 8.0
 
 [node name="UpgradeCost" type="Label" parent="." unique_id=839407247]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -89,7 +84,6 @@ grow_vertical = 0
 text = "Upgrade Cost: "
 
 [node name="CoffeeCounter" type="Label" parent="." unique_id=44092733]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -103,27 +97,42 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TotalCoffeeCount" type="Label" parent="." unique_id=1573962714]
-layout_mode = 0
 offset_left = 1.0
 offset_top = 1.0
 offset_right = 100.0
 offset_bottom = 56.0
 
 [node name="AutoBrewers" type="Label" parent="." unique_id=1386275607]
-layout_mode = 0
 offset_left = 3.0
 offset_top = 518.0
 offset_right = 111.0
 offset_bottom = 557.0
 
 [node name="FloorCost" type="Label" parent="." unique_id=53398053]
-layout_mode = 0
 offset_left = 537.0
 offset_top = 19.0
 offset_right = 577.0
 offset_bottom = 42.0
 
 [node name="AutoBrewTimer" type="Timer" parent="." unique_id=282432889]
+
+[node name="3DMain" type="Node3D" parent="." unique_id=1813402994]
+script = ExtResource("2_h2yge")
+
+[node name="Floors" parent="3DMain" unique_id=223573259 instance=ExtResource("3_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Earth" type="StaticBody3D" parent="3DMain" unique_id=164753407]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3DMain/Earth" unique_id=1951721350]
+shape = SubResource("BoxShape3D_h2yge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3DMain/Earth" unique_id=266551284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -800, 0)
+mesh = SubResource("SphereMesh_1bvp3")
+
+[node name="Camera3D" type="Camera3D" parent="3DMain" unique_id=740457511]
+transform = Transform3D(0.6021296, -0.33935905, 0.72268605, 0.027819209, 0.91353786, 0.40580082, -0.7979135, -0.22424015, 0.5595091, 4.2433834, 2.2922816, 3.0208702)
 
 [connection signal="pressed" from="Brew" to="." method="_on_brew_pressed"]
 [connection signal="pressed" from="Upgrade" to="." method="_on_upgrade_pressed"]

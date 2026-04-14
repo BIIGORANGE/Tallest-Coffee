@@ -1,4 +1,4 @@
-extends Control
+extends Node
 @onready var brew: Button = $Brew
 @onready var upgrade: Button = $Upgrade
 @onready var new_floor: Button = $NewFloor
