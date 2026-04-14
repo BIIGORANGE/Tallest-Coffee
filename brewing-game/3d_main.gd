@@ -1,14 +1,19 @@
 extends Node3D
 
+const FLOORS = preload("res://floors.tscn")
 
-@onready var floors: StaticBody3D = $Floors
+var floors_scene = FLOORS.instantiate()
+var height_tracker = 0
 
-var height = floors
-# Called when the node enters the scene tree for the first time.
+
+func add_new_floor():
+	add_child(floors_scene)
+	floors_scene.set_global_position(Vector3(0,0.5 + height_tracker,0))
+	height_tracker += 0.5
+	
+	
 func _ready() -> void:
-	pass # Replace with function body.
-
-
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass

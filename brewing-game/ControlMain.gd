@@ -9,10 +9,11 @@ extends Node
 @onready var floor_cost_label: Label = $FloorCost
 @onready var auto_brewers_label: Label = $AutoBrewers
 @onready var auto_brew_timer: Timer = $AutoBrewTimer
+@onready var _3d_main: Node3D = $"3DMain"
 
 var fruits = 0
 var floors = 1
-var floor_cost = 100
+var floor_cost = 0
 var coffee_total_counter = 0.0
 var coffee_counter = 0.0
 var multiplier = 1.0
@@ -67,6 +68,7 @@ func _on_new_floor_pressed() -> void:
 		auto_brewers = 0
 		multiplier = 1
 		update_labels()
+		_3d_main.add_new_floor()
 		fruits += 1
 	else:
 		print("need more coffee!")
