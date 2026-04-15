@@ -7,11 +7,13 @@ var height_tracker = 0
 
 
 func add_new_floor():
+	#currently broken. i think its not adding any new floors, just changing the position of existing one
 	add_child(floors_scene)
 	floors_scene.set_global_position(Vector3(0,0.5 + height_tracker,0))
 	height_tracker += 0.5
 	
-	
+
+
 func _ready() -> void:
 	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
