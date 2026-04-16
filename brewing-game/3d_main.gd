@@ -1,18 +1,16 @@
 extends Node3D
 
-const FLOORS = preload("res://floors.tscn")
+var floors = preload("res://floors.tscn")
 
-var floors_scene = FLOORS.instantiate()
 var height_tracker = 0
 
 
 func add_new_floor():
-	#currently broken. i think its not adding any new floors, just changing the position of existing one
+	#floors_scene var needed here to instance new floor each time func add_new_floor() is called
+	var floors_scene = floors.instantiate()
 	add_child(floors_scene)
 	floors_scene.set_global_position(Vector3(0,0.5 + height_tracker,0))
-	height_tracker += 0.5
-	
-
+	height_tracker += 1
 
 func _ready() -> void:
 	pass
