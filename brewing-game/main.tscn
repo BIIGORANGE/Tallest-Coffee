@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c0nj0pc0q3tfi" path="res://ControlMain.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://dft8h3ay01bl1" path="res://3d_main.gd" id="2_h2yge"]
 [ext_resource type="StyleBox" uid="uid://v070twqf5ejr" path="res://normal_style_box_flat.tres" id="2_lquwl"]
+[ext_resource type="Script" uid="uid://by1yqlov4hr0a" path="res://window_main.gd" id="3_7mycd"]
 [ext_resource type="Script" uid="uid://dglbk7uupldk8" path="res://camera_gimbal.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cdkiobbis424n" path="res://floors.tscn" id="4_1bvp3"]
 
@@ -225,8 +226,19 @@ transform = Transform3D(1, 0, 0, 0, 0.7497878, 0.6616784, 0, -0.6616784, 0.74978
 [node name="WorldEnvironment" type="WorldEnvironment" parent="3DMain" unique_id=963889699]
 environment = SubResource("Environment_h2yge")
 
-[node name="Floors" parent="." unique_id=223573259 instance=ExtResource("4_1bvp3")]
+[node name="Floors" parent="3DMain" unique_id=223573259 instance=ExtResource("4_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="PopupMain" type="Window" parent="." unique_id=1476171989]
+oversampling_override = 1.0
+position = Vector2i(20, 50)
+size = Vector2i(300, 350)
+visible = false
+script = ExtResource("3_7mycd")
+
+[node name="Label" type="Label" parent="PopupMain" unique_id=349018614]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [connection signal="pressed" from="Brew" to="." method="_on_brew_pressed"]
 [connection signal="pressed" from="Upgrade" to="." method="_on_upgrade_pressed"]
@@ -235,3 +247,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [connection signal="pressed" from="BananaUpgrade" to="." method="_on_banana_upgrade_pressed"]
 [connection signal="pressed" from="StrawberryUpgrade" to="." method="_on_strawberry_upgrade_pressed"]
 [connection signal="timeout" from="AutoBrewTimer" to="." method="_on_auto_brew_timer_timeout"]
+[connection signal="close_requested" from="PopupMain" to="." method="_on_popup_main_close_requested"]

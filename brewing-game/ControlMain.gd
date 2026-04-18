@@ -22,11 +22,15 @@ extends Node
 #reference to Node3D where all physical world items exist. added this to be able to access 
 #functions when UI buttons are pressed
 @onready var _3d_main: Node3D = $"3DMain"
+#getting Window Node that handles all popups for events
+#functions when certain milestones are acheived by the player
+@onready var popup_main: Window = $PopupMain
+
 
 #all other variables
 var fruits = 0
 var floors = 1
-var floor_cost = 50
+var floor_cost = 0
 var coffee_total_counter = 0.0
 var coffee_counter = 0.0
 var brew_multiplier = 1.0
@@ -46,12 +50,14 @@ func _process(delta: float) -> void:
 	#will add toggleable ui visibilty if time allows later
 	#if Input.is_action_just_pressed("toggle_ui_visibility"):
 		#toggle_ui_visibility()
-		pass
+		popup_main.position.y = clamp(popup_main.position.y, 25, 600)
+		popup_main.position.x = clamp(popup_main.position.x, 25, 1000)
 
 func _on_brew_pressed() -> void:
 	coffee_total_counter = snapped(coffee_total_counter + ((1 * (brew_multiplier + brew_multiplier_perm))* floors), 0.1)
 	coffee_counter = snapped(coffee_counter + ((1 * (brew_multiplier + brew_multiplier_perm)) * floors), 0.1)
 	update_labels()
+	popup_main.handle_events(0, coffee_total_counter)
 
 func _on_upgrade_pressed() -> void:
 	if coffee_counter >= upgrade_cost:
@@ -92,9 +98,9 @@ func _on_new_floor_pressed() -> void:
 		update_labels()
 		_3d_main.add_new_floor()
 		fruits += 1
+		popup_main.handle_events(floors, 0)
 	else:
 		print("need more coffee!")
-
 func _on_banana_upgrade_pressed() -> void:
 	if fruits >= fruit_upgrade_cost:
 		fruits -= fruit_upgrade_cost
@@ -119,7 +125,7 @@ func update_labels():
 	multiplier_label.text = "Multiplier: " + str(brew_multiplier + brew_multiplier_perm)
 	fruits_label.text = "Fruits: " + str(fruits)
 	floors_counter.text = "Floors: " + str(floors)
-	
+
 func toggle_ui_visibility():
 	if ui_visiblity:
 		ui_visiblity = false
@@ -129,3 +135,7 @@ func toggle_ui_visibility():
 		ui_visiblity = true
 		brew.visible = true
 		print("working_!")
+		
+
+func _on_popup_main_close_requested() -> void:
+	popup_main.hide()
