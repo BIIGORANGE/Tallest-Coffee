@@ -31,7 +31,7 @@ var tutorial_displayed = false
 #all other variables
 var fruits = 0
 var floors = 1
-var floor_cost = 0
+var floor_cost = 50
 var coffee_total_counter = 0.0
 var coffee_counter = 0.0
 var brew_multiplier = 1.0
