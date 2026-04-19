@@ -26,7 +26,8 @@ extends Node
 #functions when certain milestones are acheived by the player
 @onready var popup_main: Window = $PopupMain
 
-
+#tutorial variable
+var tutorial_displayed = false
 #all other variables
 var fruits = 0
 var floors = 1
@@ -61,9 +62,9 @@ func _on_brew_pressed() -> void:
 
 func _on_upgrade_pressed() -> void:
 	if coffee_counter >= upgrade_cost:
-		brew_multiplier += 0.1
+		brew_multiplier = snapped(brew_multiplier + 0.1, 0.1)
 		coffee_counter = snapped(coffee_counter - upgrade_cost, 0.1)
-		upgrade_cost = snapped(upgrade_cost * 1.2, 0.1)
+		upgrade_cost = snapped(upgrade_cost * 1.05, 0.1)
 		update_labels()
 	else:
 		print("need more coffee")
@@ -72,70 +73,78 @@ func _on_auto_brew_upgrade_pressed() -> void:
 	if coffee_counter >= upgrade_cost:
 		auto_brewers += 1
 		coffee_counter -= upgrade_cost
-		upgrade_cost = snapped(upgrade_cost * 1.1, 0.1)
+		upgrade_cost = snapped(upgrade_cost * 1.05, 0.1)
 		update_labels()
 	else:
 		print("need more coffee!")
 
-
 func _on_auto_brew_timer_timeout() -> void:
-	coffee_counter = snapped(coffee_counter + (auto_brewers + auto_brewer_perm * floors), 0.1)
-	coffee_total_counter = snapped(coffee_total_counter + (auto_brewers + auto_brewer_perm * floors), 0.1)
+	coffee_counter = snapped(coffee_counter + ((auto_brewers + auto_brewer_perm) * floors * (brew_multiplier + brew_multiplier_perm)), 0.1)
+	coffee_total_counter = snapped(coffee_total_counter + ((auto_brewers+ auto_brewer_perm) * floors * (brew_multiplier + brew_multiplier_perm)), 0.1)
 	update_labels()
+	popup_main.handle_events(0, coffee_total_counter)
 
 func _on_new_floor_pressed() -> void:
 	if coffee_counter >= floor_cost:
 		floors += 1
-		floor_cost = floor_cost * floors
+		floor_cost = snapped(floor_cost + (floor_cost * .72), 0.1)
 		print(floors)
 		coffee_counter = 0
 		upgrade_cost = 10
 		upgrade_cost = upgrade_cost * floors
 		auto_brewers = 0
-		auto_brewers += auto_brewer_perm
 		brew_multiplier = 1
-		brew_multiplier += brew_multiplier_perm
 		update_labels()
 		_3d_main.add_new_floor()
-		fruits += 1
+		reveal_ui()
+		if floors % 10 == 0:
+			fruits += 10
+		else:
+			fruits += 1
 		popup_main.handle_events(floors, 0)
 	else:
 		print("need more coffee!")
 func _on_banana_upgrade_pressed() -> void:
 	if fruits >= fruit_upgrade_cost:
 		fruits -= fruit_upgrade_cost
-		fruit_upgrade_cost +=1
-		brew_multiplier_perm += 0.1
+		fruit_upgrade_cost += 1
+		brew_multiplier_perm += 0.5
 		update_labels()
 
 func _on_strawberry_upgrade_pressed() -> void:
 	if fruits >= fruit_upgrade_cost:
 		fruits -= fruit_upgrade_cost
 		fruit_upgrade_cost +=1
-		auto_brewer_perm += 1
+		auto_brewer_perm += 5
 		update_labels()
 
 func update_labels():
 	total_coffee_label.text = "Total Coffee brewed: " + str(coffee_total_counter)
 	coffee_counter_label.text = "Coffee: " + str(coffee_counter)
 	upgrade_cost_label.text = "Upgrade Cost: "+ str(upgrade_cost)
-	auto_brewers_label.text = "Auto Brewers: " + str(auto_brewers + auto_brewer_perm)
+	auto_brewers_label.text = "Auto Brewers: " + str(auto_brewers) + " + " + str(auto_brewer_perm)
 	floor_cost_label.text = "Floor Cost: " + str(floor_cost)
 	fruit_upgrade_cost_label.text = "Fruits Needed: " + str (fruit_upgrade_cost)
-	multiplier_label.text = "Multiplier: " + str(brew_multiplier + brew_multiplier_perm)
+	multiplier_label.text = "Multiplier: " + str(brew_multiplier) + " + " + str(brew_multiplier_perm)
 	fruits_label.text = "Fruits: " + str(fruits)
 	floors_counter.text = "Floors: " + str(floors)
 
-func toggle_ui_visibility():
-	if ui_visiblity:
-		ui_visiblity = false
-		brew.visible = false
-		print("working")
-	if !ui_visiblity:
-		ui_visiblity = true
-		brew.visible = true
-		print("working_!")
+func reveal_ui():
+	if floors == 2:
+		banana_upgrade.visible = true
+		strawberry_upgrade.visible = true
+		fruits_label.visible = true
+		fruit_upgrade_cost_label.visible = true
 		
+
 
 func _on_popup_main_close_requested() -> void:
 	popup_main.hide()
+	if floors == 2 and tutorial_displayed == false:
+		upgrade_cost_label.visible = true
+		upgrade.visible = true
+		auto_brewers_label.visible = true
+		auto_brew_upgrade.visible = true
+		multiplier_label.visible = true
+		popup_main.display_tutorial()
+		tutorial_displayed = true

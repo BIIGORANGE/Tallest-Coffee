@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bc6i4i8grvuft"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e8uk3"]
+
+[node name="TallBuilding" type="MeshInstance3D" unique_id=362978301]
+transform = Transform3D(1, 0, 0, 0, 2.4209192, 0, 0, 0, 1, 0, 0.34614766, 0)
+mesh = SubResource("BoxMesh_e8uk3")
